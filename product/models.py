@@ -1,6 +1,7 @@
 from django.db import models
 from utils.images import resize_image
 
+
 # Create your models here.
 """
 Produto:
