@@ -7,9 +7,13 @@ class ProductTypeInLine(admin.TabularInline):
     extra = 1
 
 class ProductAdmin(admin.ModelAdmin):
+    list_display = 'name', 'short_description','get_price_formated','get_promo_price_formated',   
     inlines =[
         ProductTypeInLine,
     ]
+    prepopulated_fields={
+        'slug':('name',),
+    }
 
 # Register your models here.
 
