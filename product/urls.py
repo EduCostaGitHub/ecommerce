@@ -22,10 +22,10 @@ from product.views import ProductList, \
 app_name = 'product'#product:
 
 urlpatterns = [
-    path('', ProductList.as_view(), name='list'),
-    path('<slug>/', ProductDetail.as_view(), name='detail'),
+    path('', ProductList.as_view(), name='list'),    
     path('addtocart/', AddToCart.as_view(), name='addtocart'),
     path('removefromcart/', RemoveFromCart.as_view(), name='removefromcart'),
     path('cart/', Cart.as_view(), name='cart'),
     path('finalize/', Finalize.as_view(), name='finalize'),
+    path('<slug>/', ProductDetail.as_view(), name='detail'),
 ] 

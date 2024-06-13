@@ -5,11 +5,13 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-class ProductList(ListView):
-    ...
+class ProductList(View):
+    def get(self, *args, **kwargs):
+        return HttpResponse('List Products')
 
 class ProductDetail(View):
-    ...
+    def get(self, *args, **kwargs):
+        return HttpResponse('Product Detail')
 
 class AddToCart(View):
     def get(self, *args, **kwargs):

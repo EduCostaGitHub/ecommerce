@@ -21,7 +21,7 @@ app_name = 'request'
 
 urlpatterns = [
         path('pay/', RequestPay.as_view() , name='pay'),
-        path('close', CloseRequest.as_view() , name='close'),
+        path('close/', CloseRequest.as_view() , name='close'),
         path('detail/<int:pk>', RequestDetail.as_view() , name='detail'),
 
 ] 
