@@ -22,11 +22,11 @@ from django.conf.urls.static import static
 urlpatterns = [
         # TODO: Remove
         path("__debug__/", include("debug_toolbar.urls")),
-
+        path('admin/', admin.site.urls),
         
         path('profile/', include('uprofile.urls')),
         path('request/', include('requests.urls')),
         path('', include('product.urls')),
         
-        path('admin/', admin.site.urls),
+        
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

@@ -1,7 +1,6 @@
 from django.db import models
 from utils.images import resize_image
-from utils.rands import slugify_new
-
+from utils import utils,rands
 
 # Create your models here.
 """
@@ -23,7 +22,12 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     short_description = models.CharField(max_length=255)
     description= models.TextField()
-    image = models.ImageField(upload_to='product_img/%Y/%m/', blank=True, null=True)
+    image = models.ImageField(
+        upload_to='product_img/%Y/%m/',
+        blank=True, 
+        null=True,
+        default='default.jpg',
+    )
     slug = models.SlugField(unique=True,blank=True)
     price = models.FloatField()
     promo_price = models.FloatField(default=0)
@@ -37,12 +41,12 @@ class Product(models.Model):
     )
 
     def get_price_formated(self):
-        return f'{self.price:.2f}€'.replace('.',',')
+        return utils.format_price(self.price)
     
     get_price_formated.short_description = 'Price €'
 
     def get_promo_price_formated(self):
-        return f'{self.promo_price:.2f}€'.replace('.',',')
+        return utils.format_price(self.promo_price)
     
     get_promo_price_formated.short_description = 'Promo Price €'
 
@@ -51,7 +55,7 @@ class Product(models.Model):
         max_width = 800
         #slug
         if not self.slug:
-            self.slug = slugify_new(self.name)
+            self.slug = rands.slugify_new(self.name)
             
         #before save
         current_image = str(self.image.name)
