@@ -30,7 +30,7 @@ class Product(models.Model):
     )
     slug = models.SlugField(unique=True,blank=True)
     price = models.FloatField()
-    promo_price = models.FloatField(default=0)
+    promo_price = models.FloatField(default=0,)
     p_type = models.CharField(
         default='V',
         max_length=1,
@@ -92,7 +92,7 @@ class ProductType(models.Model):
     name = models.CharField(max_length=55,  blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.FloatField()
-    promo_price = models.FloatField(default=0)
+    promo_price = models.FloatField(default=0,)
     stock = models.PositiveIntegerField(default=1)
 
     def __str__(self) -> str:

@@ -92,15 +92,16 @@ class AddToCart(View):
                     f'"{_product_name}", {_pType_stock} available in cart'
                 )
                 qty_in_cart = _pType_stock
+                #return
+                return redirect(self.request.META['HTTP_REFERER']) 
+
             #update cart
             #set cart qty
             cart[_pType_id]['qty'] = qty_in_cart
             #set cart total price
             cart[_pType_id]['qty_price'] = _unit_price * qty_in_cart
             #set cart total price
-            cart[_pType_id]['qty_promo_price'] = _unit_promo_price * qty_in_cart
-
-            return redirect(self.request.META['HTTP_REFERER'])
+            cart[_pType_id]['qty_promo_price'] = _unit_promo_price * qty_in_cart           
 
         else:
             #product does not exist in cart, add it
@@ -117,12 +118,7 @@ class AddToCart(View):
                 'slug': _slug, 
                 'image':_image, 
             }
-        #save cart in session
-        self.request.session.save()        
-
-        # TODO: remove debug
-        #debug
-        #pprint(cart)
+                
         #check if product is Simple or has Variations
         if pType_to_add.product.p_type == 'S':
             _message = f'{_product_name} added to your cart'
@@ -134,11 +130,35 @@ class AddToCart(View):
             _message
         )
 
+        #save cart in session
+        self.request.session.save()  
+
         return redirect(self.request.META['HTTP_REFERER'])        
 
 class RemoveFromCart(View):
     def get(self, *args, **kwargs):
-        return HttpResponse('Remove from Cart')
+        pType_id = self.request.GET.get('id')
+        # 
+        _cart = self.request.session.get('cart')        
+
+        if not pType_id or not _cart or not pType_id in _cart:
+            messages.error(
+                self.request,
+                'Product not found!',
+            )
+            return redirect(reverse('product:list'))
+        
+        #remove from cart 
+        del _cart[pType_id]
+        #save
+        self.request.session.save()
+        #success
+        messages.success(
+                self.request,
+                'Product removed from cart',
+            )
+        
+        return redirect(self.request.META['HTTP_REFERER']) 
 
 class Cart(View):
     def get(self, *args, **kwargs):
