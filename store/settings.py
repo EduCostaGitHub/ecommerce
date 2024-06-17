@@ -42,10 +42,18 @@ INSTALLED_APPS = [
     'product',
     'requests',
     'uprofile',
+    #
+    'crispy_forms',
+    "crispy_bootstrap4",
 
     # TODO: Remove    
     "debug_toolbar",
 ]
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+    
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
 
     # TODO: Remove 
     "debug_toolbar.middleware.DebugToolbarMiddleware",

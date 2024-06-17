@@ -164,7 +164,7 @@ class Cart(View):
     def get(self, *args, **kwargs):
         return render(self.request,'product/cart.html')
  
-class Finalize(View):
+class Resume(View):
     def get(self, *args, **kwargs):
         return HttpResponse('Finalize')
  

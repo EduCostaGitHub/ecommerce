@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path
 
 from product.views import ProductList, \
-        ProductDetail,AddToCart,RemoveFromCart,Cart,Finalize
+        ProductDetail,AddToCart,RemoveFromCart,Cart,Resume
 
 app_name = 'product'#product:
 
@@ -26,6 +26,6 @@ urlpatterns = [
     path('addtocart/', AddToCart.as_view(), name='addtocart'),
     path('removefromcart/', RemoveFromCart.as_view(), name='removefromcart'),
     path('cart/', Cart.as_view(), name='cart'),
-    path('finalize/', Finalize.as_view(), name='finalize'),
+    path('resume/', Resume.as_view(), name='resume'),
     path('<slug>/', ProductDetail.as_view(), name='detail'),
 ] 
