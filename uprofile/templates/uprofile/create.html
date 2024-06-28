@@ -2,34 +2,50 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="row">
+<div class="row">
 
 
-        {% if not request.user.is_authenticated %}
-            <div class="col-lg">
-                <h1>Login</h1>
+    {% if not request.user.is_authenticated %}
+    <div class="col-lg mt-3">
+        <h4>Login</h4>
+        <p>For registered users please input your user and password</p>
+
+        <form method="POST" action="{% url "profile:login" %}">
+            {% csrf_token %} 
+            <div class="form-group">
+                <label for="InputUser">Username</label>
+                <input name="username" type="text" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="Username" placeholder="Enter Username">
             </div>
-        {% endif %}
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                    placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
 
-        <div class="col-lg">
-            {% block register_title %}
-                <h1>Register</h1>
-            {% endblock register_title %}
-            <form method="POST" action="">
-                {% csrf_token %}
-                {{ userform | crispy }}
-                {{ profileform | crispy }}
-                
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">
-                            Submit
-                        </button>
-                    </div>
-                </div>
-            </form>            
-        </div>
     </div>
+    {% endif %}
+
+    <div class="col-lg mt-3">
+        {% block register_title %}
+        <h4>Register</h4>
+        <p>Please input data to register</p>
+        {% endblock register_title %}
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ userform | crispy }}
+            {{ profileform | crispy }}
+
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">
+                        Register
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock content %}
-
-

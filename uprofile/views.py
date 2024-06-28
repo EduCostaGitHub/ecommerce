@@ -1,10 +1,11 @@
 
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic.list import ListView
+from django.contrib import messages
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 import copy
 
 from uprofile import models
@@ -65,8 +66,7 @@ class CreateProfile(BaseProfile):
 
         _authentic = None        
 
-        if not self.userform.is_valid() or not self.profileform.is_valid():            
-        #if not self.userform.is_valid():            
+        if not self.userform.is_valid() or not self.profileform.is_valid():                
             return self.render
         
         username = self.userform.cleaned_data.get('username')        
@@ -121,18 +121,71 @@ class CreateProfile(BaseProfile):
             login(self.request, user=_user)
 
         self.request.session['cart'] = self.cart
-        self.request.session.save()        
+        self.request.session.save() 
 
-        return self.render
+        messages.success(
+            self.request,
+            'Your profile is update/created'
+        )       
+
+        return redirect('profile:create')
+        #return self.render
+
+
 
 class UpdateProfile(View):
     def get(self, *args, **kwargs):
         return HttpResponse('Update Profile')
 
 class LoginProfile(View):
-    def get(self, *args, **kwargs):
-        return HttpResponse('Login Profile')
+    def post(self, *args, **kwargs):
+        _username = self.request.POST.get('username')
+        _password = self.request.POST.get('password')
 
+        if not _username or not _password:
+            messages.error(
+            self.request,
+            'Please input username and password',
+            )
+            return redirect('profile:create')
+        
+        #authenticate user
+        _user = authenticate(
+            self.request,
+            username=_username,
+            password=_password,
+        )
+
+        if not _user:
+            messages.error(
+            self.request,
+            'Please input correct username and password',
+            )
+            return redirect('profile:create')
+
+        login(
+            self.request,
+            user=_user,
+        )
+
+        messages.success(
+            self.request,
+            'Welcome, you are logged',
+            )
+        return redirect('product:cart')
+        
 class LogoutProfile(View):
     def get(self, *args, **kwargs):
-        return HttpResponse('Logout Profile')
+        # capy cart
+        cart = copy.deepcopy(self.request.session.get('cart',{}))
+        # logout
+        logout(self.request)
+        # paste cart to session
+        self.request.session['cart'] = cart
+        self.request.session.save()
+
+        messages.success(
+            self.request,
+            'Good bye, you logged out',
+            )
+        return redirect('product:list')
