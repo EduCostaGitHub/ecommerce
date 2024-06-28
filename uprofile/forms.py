@@ -58,7 +58,7 @@ class UserForm(forms.ModelForm):
         #LOGGED USER - UPDATE
         if self.user:
             if db_user:
-                if data_user == db_user.username: 
+                if data_user != db_user.username: 
                     validation_error_msgs['username']= error_msg_user_exists
                 
             if db_email:   
