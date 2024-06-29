@@ -1,4 +1,4 @@
-from typing import Any
+from uprofile.models import UserProfile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic.list import ListView
@@ -166,5 +166,17 @@ class Cart(View):
  
 class Resume(View):
     def get(self, *args, **kwargs):
-        return HttpResponse('Finalize')
+        if not self.request.user.is_authenticated:
+            return redirect('profile:create')
+        
+        profile = UserProfile.objects.get(user=self.request.user)       
+        
+        context ={
+            'user': self.request.user,
+            'profile':profile,
+            'cart': self.request.session['cart'],
+        }
+
+        pprint(self.request.user)
+        return render(self.request,'product/resume.html',context)
  

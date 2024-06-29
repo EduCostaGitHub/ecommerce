@@ -66,7 +66,11 @@ class CreateProfile(BaseProfile):
 
         _authentic = None        
 
-        if not self.userform.is_valid() or not self.profileform.is_valid():                
+        if not self.userform.is_valid() or not self.profileform.is_valid():  
+            messages.error(
+                self.request,
+                'Please verify form data',
+            )              
             return self.render
         
         username = self.userform.cleaned_data.get('username')        
