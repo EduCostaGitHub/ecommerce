@@ -5,7 +5,6 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib import messages
 from django.views import View
-from django.http import HttpResponse
 from product.models import Product, ProductType
 
 #to debug
@@ -169,7 +168,22 @@ class Resume(View):
         if not self.request.user.is_authenticated:
             return redirect('profile:create')
         
-        profile = UserProfile.objects.get(user=self.request.user)       
+        profile = UserProfile.objects.get(user=self.request.user)
+        #check if profile exists
+        if not profile:
+            messages.error(
+                self.request,
+                'Please update your profile'
+            )
+            return redirect('profile:create')
+        
+        #check cart
+        if not self.request.session.get('cart'):
+            messages.error(
+                self.request,
+                'Please add products to your cart'
+            )
+            return redirect('product:list')
         
         context ={
             'user': self.request.user,
@@ -177,6 +191,5 @@ class Resume(View):
             'cart': self.request.session['cart'],
         }
 
-        pprint(self.request.user)
         return render(self.request,'product/resume.html',context)
  
