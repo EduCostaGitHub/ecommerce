@@ -9,7 +9,7 @@
         <h2>Resume</h2>
 
         <p class="lead">User</p>
-        <p>To Edit, <a href="{% url "profile:create" %}">click</a></p>
+        <p>To Edit, <a href="{% url 'profile:create' %}">click</a></p>
         <dl class="row">
             <dt class="col-lg-2">Name:</dt>
             <dd class="col-lg-4">{{ user.first_name}}</dd>
@@ -28,20 +28,20 @@
         </dl>
 
         <p class="lead">Address</p>
-        <p> To Edit, <a href="{% url "profile:create" %}">click</a></p>
+        <p> To Edit, <a href="{% url 'profile:create' %}">click</a></p>
         <dl class="row">
             <dt class="col-lg-2">Address:</dt>
             <dd class="col-lg-4">{{profile.address}}</dd>
             <dt class="col-lg-2">Number:</dt>
             <dd class="col-lg-4">{{profile.number}}</dd>
-            
+
             <dt class="col-lg-2">Place:</dt>
             <dd class="col-lg-4">{{profile.local}}</dd>
 
             <dt class="col-lg-2">City:</dt>
             <dd class="col-lg-4">{{profile.city}}</dd>
             <dt class="col-lg-2">District:</dt>
-            <dd class="col-lg-4">{{profile.district}}</dd>
+            <dd class="col-lg-4">{{profile.get_district_display}}</dd>
 
             <dt class="col-lg-2">Postal Code:</dt>
             <dd class="col-lg-4">{{profile.postal_code}}</dd>
@@ -55,9 +55,9 @@
         <p class="lead">Your Products and quantities</p>
 
         <div class="table-responsive">
-            
+
             {% include "partials/_cart.html" %}
-            
+
         </div>
     </div>
 </div>
@@ -66,13 +66,13 @@
     <p class='lead'>Total on cart</p>
 
     <div class='table-responsive'>
-        <table class="table">            
+        <table class="table">
             <tr>
                 <td class="font-weight-bold">Total</td>
                 <td>{{ request.session.cart | cart_total | format_price }}</td>
                 <td>
                     <div class="col">
-                        <a class="btn btn-block btn-primary btn-lg" href="{% url "request:pay" %}">
+                        <a class="btn btn-block btn-primary btn-lg" href="{% url 'request:save' %}">
                             Buy
                         </a>
                     </div>
@@ -80,8 +80,7 @@
                 </td>
             </tr>
         </table>
-    </div>    
+    </div>
 </div>
 
 {% endblock content %}
-

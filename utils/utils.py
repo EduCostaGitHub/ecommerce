@@ -1,6 +1,6 @@
 
 def format_price(val):
-    return f'{val:.2f}€'.replace('.',',')
+    return f'{val:.2f} €'.replace('.',',')
 
 def cart_total_qtd(cart):
     return sum([item['qty'] for item in cart.values()])
