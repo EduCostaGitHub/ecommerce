@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views import View
 from django.http import HttpResponse
 from django.contrib import messages
@@ -8,32 +8,30 @@ from product.models import ProductType
 from requests.models import Requests, ItemRequest
 from utils import utils
 
-class DispatchLoginRequired(DetailView):
+class DispatchLoginRequiredMixin(View):
     def dispatch(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect('profile:create')
 
         return super().dispatch(*args, **kwargs)
+    
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs) # type: ignore
+        qs = qs.filter(user=self.request.user)
+        return qs   
     
 
 
 # Create your views here.
 
-class RequestPay(DetailView):
+class RequestPay(DispatchLoginRequiredMixin,DetailView):
     template_name = 'request/pay.html'
     model= Requests
     pk_url_kwarg='pk'
     context_object_name = 'request'
-
-    def dispatch(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('profile:create')
-        return super().dispatch(*args, **kwargs)
+   
     
-    def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset(*args, **kwargs)
-        qs = qs.filter(user=self.request.user)
-        return qs   
+    
     
 
 class RequestSave(View):
@@ -144,12 +142,17 @@ class RequestSave(View):
             )
 
     
-class RequestList(View):
-    def get(self, *args, **kwargs):
-        return HttpResponse('List')
+class RequestList(DispatchLoginRequiredMixin, ListView):
+    model = Requests
+    context_object_name = 'requests'
+    template_name = 'request/list.html'
+    paginate_by = 5
+    ordering = ['-id']
     
 
-class RequestDetail(View):
-    def get(self, *args, **kwargs):
-        return HttpResponse('Detail')
-
+class RequestDetail(DispatchLoginRequiredMixin, DetailView):
+    model = Requests
+    context_object_name = 'request'
+    template_name = 'request/detail.html'
+    pk_url_kwarg='id'
+   

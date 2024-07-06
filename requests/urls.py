@@ -23,6 +23,6 @@ urlpatterns = [
         path('pay/<int:pk>', RequestPay.as_view() , name='pay'),
         path('save/', RequestSave.as_view() , name='save'),
         path('list/', RequestList.as_view() , name='list'),
-        path('detail/<int:pk>', RequestDetail.as_view() , name='detail'),
+        path('detail/<int:id>', RequestDetail.as_view() , name='detail'),
 
 ] 
