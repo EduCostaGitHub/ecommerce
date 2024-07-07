@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.contrib import messages
 from django.views import View
 from product.models import Product, ProductType
+from django.db.models import Q
 
 #to debug
 from pprint import pprint
@@ -16,7 +17,7 @@ class ProductList(ListView):
     model = Product
     template_name = 'product/list.html'
     context_object_name = 'products'
-    paginate_by = 9
+    paginate_by = 6
     ordering = ['-id']
 
 
@@ -189,3 +190,21 @@ class Resume(View):
 
         return render(self.request,'product/resume.html',context)
  
+class ProductSearch(ProductList):
+    def get_queryset(self,*args, **kwargs):
+        qs =super().get_queryset(*args, **kwargs)
+
+        _term = self.request.GET.get('term') or self.request.session['_term']
+
+        if _term:
+            qs = Product.objects.filter(
+                Q(name__icontains=_term) |
+                Q(short_description__icontains=_term) |
+                Q(description__icontains=_term)
+            )
+            self.request.session['_term'] = _term
+            self.request.session.save()
+
+        return qs
+    
+    
