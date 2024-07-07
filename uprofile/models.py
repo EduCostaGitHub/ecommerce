@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 import re
+from utils.utils import valida_cc
 
 # Create your models here.
 """
@@ -88,6 +89,22 @@ class UserProfile(models.Model):
     
     def clean(self) -> None:
         error_messages = {}
+
+        _cc = self.cc or None
+
+        _db_cc = None
+
+        _profile = UserProfile.objects.filter(cc=_cc).first()
+
+        if _profile:
+            _db_cc = _profile.cc
+
+            if _db_cc is not None and self.pk != _profile.pk:
+                ## cc already exists
+                error_messages['cc'] = 'cc number already exists!'
+
+        if not valida_cc(self.cc):
+            error_messages['cc']='Input a correct cc number'
 
         if re.search(r'[^0-9+''-'']', self.postal_code) or len(self.postal_code)<7:
             error_messages['postal_code'] = (
