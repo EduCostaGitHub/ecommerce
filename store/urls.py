@@ -19,9 +19,7 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [
-        # TODO: Remove
-        path("__debug__/", include("debug_toolbar.urls")),
+urlpatterns = [        
         path('admin/', admin.site.urls),
         
         path('profile/', include('uprofile.urls')),

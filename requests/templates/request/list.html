@@ -2,6 +2,8 @@
 {% block content %}
 {% load omfilters %}
 
+{% block title %}{{user}} requests | {% endblock %}
+
 <div class="row">
     <div class="col">
         <h3 class="mb-4">Requests of {{ user.first_name }} {{ user.last_name }}</h3>
@@ -17,7 +19,7 @@
                     <th scope="col">Details</th>
                 </tr>
 
-                {% for request in requests  %}
+                {% for request in requests %}
                 <tr>
                     <th scope="row">{{ request }}</td>
                     <td>{{ request.total | format_price }}</td>

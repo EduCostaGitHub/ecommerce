@@ -28,12 +28,7 @@ class ProductDetail(DetailView):
 
 
 class AddToCart(View):
-    def get(self, *args, **kwargs): 
-        # TODO: Remove Debug
-        # if self.request.session.get('cart'):
-        #     del self.request.session['cart']
-        #     self.request.session.save()
-
+    def get(self, *args, **kwargs):         
         # get product variation id       
         pType_id = self.request.GET.get('pType_id')
         # if product variation not exist set error message and return to home

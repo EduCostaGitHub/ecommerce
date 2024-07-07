@@ -44,10 +44,7 @@ INSTALLED_APPS = [
     'uprofile',
     #
     'crispy_forms',
-    "crispy_bootstrap4",
-
-    # TODO: Remove    
-    "debug_toolbar",
+    "crispy_bootstrap4",    
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
@@ -62,10 +59,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
-
-    # TODO: Remove 
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',        
 ]
 
 ROOT_URLCONF = 'store.urls'
@@ -165,9 +159,3 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 # Salvar a cada requisição
 SESSION_SAVE_EVERY_REQUEST = False
 
-# TODO: Remove
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
